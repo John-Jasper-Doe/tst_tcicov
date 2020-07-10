@@ -21,6 +21,7 @@ set(TST_TCI_COV_VERSION ${TST_TCI_COV_MAJOR}.${TST_TCI_COV_MINOR}.${TST_TCI_COV_
 configure_file(version.hpp.in ${CMAKE_BINARY_DIR}/src/include/version.hpp @ONLY)
 
 ## Set property
+set(COVERAGE OFF CACHE BOOL "Coverage")
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Werror -Wextra -Wpedantic -g -O0)
