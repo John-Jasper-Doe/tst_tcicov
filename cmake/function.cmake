@@ -12,7 +12,14 @@ endfunction()
 function(addtest TESTNAME FIRSTSOURCE)
   add_executable(${TESTNAME} main.cpp ${FIRSTSOURCE} ${ARGN})
   target_include_directories(${TESTNAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
-  target_link_libraries(${TESTNAME} gtest)
+    
+  if (COVERAGE)
+    target_compile_options(${TESTNAME} PRIVATE --coverage)
+    target_link_libraries(${TESTNAME} PRIVATE --coverage gtest)
+  else()
+    target_link_libraries(${TESTNAME} PRIVATE gtest)
+  endif()
+  
   add_test(
     NAME ${TESTNAME}
     COMMAND ${CMAKE_COMMAND} --build . --target ${TESTNAME}
@@ -23,10 +30,6 @@ function(addtest TESTNAME FIRSTSOURCE)
     CXX_STANDARD_REQUIRED ON
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/test_bin
   )
-  if (COVERAGE)
-    target_compile_options(${TESTNAME} PRIVATE --coverage)
-    target_link_libraries(${TESTNAME} PRIVATE --coverage)
-  endif()
   
   # Test autoruns....
 #  add_custom_command(
