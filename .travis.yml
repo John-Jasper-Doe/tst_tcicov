@@ -19,12 +19,18 @@ addons:
 
 before_script:
 #  - sudo apt-get update -q
-  - sudo apt install doxygen -y
-  - sudo apt install graphviz -y
+#  - sudo apt install doxygen -y
+#  - sudo apt install graphviz -y
+
+before_install:
+  - pip install --user cpp-coveralls
 
 script:
-  - cmake .
+  - CXX=/usr/bin/g++-8 CC=/usr/bin/gcc-8 cmake -DCOVERAGE=1 .
   - cmake --build .
+  
+after_success:
+  - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
 
 env:
   - TARGET=bulkmt
