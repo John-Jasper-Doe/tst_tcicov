@@ -1,0 +1,30 @@
+dist: xenial
+
+language: c++
+
+before_script:
+- sudo apt-get update -q
+- sudo apt install doxygen -y
+- sudo apt install graphviz -y
+
+script:
+- cmake .
+- cmake --build .
+
+env:
+  - TARGET=bulkmt
+
+deploy:
+- provider: pages
+  skip-cleanup: true
+  local_dir: docs/html
+  github-token: $GITHUB_TOKEN
+  keep_history: true
+  on:
+    branch: master
+
+- provider: script
+  skip_cleanup: true
+  on:
+    branch: master
+
